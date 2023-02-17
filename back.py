@@ -75,4 +75,18 @@ def up_cliente():
     return chamada
 
 
+
+# ====quadra-cliente=====
+@app.route("/solicitacao-quadra", methods=["PUT"])
+def solicitacao_quadra():
+    id_cliente = json.loads(request.data)
+
+    print(f"[ID_CLIENTE] {id_cliente}")
+    document = classe.find_one_cliente(id_cliente)['document']
+    print(f"[DOCUMENTS] {document}")
+
+    classe.update_mongo_quadra_cliente(documents_client=document, documents_quadra=id_cliente)
+
+    return {'porra':'nenhuma'}
+
 app.run(port=3030)

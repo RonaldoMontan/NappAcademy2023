@@ -8,7 +8,7 @@ class Mongo:
         self.headers = {
             'Content-Type': 'application/json',
             'Access-Control-Request-Headers': '*',
-            'api-key': '', 
+            'api-key': 'hGDscvigxaMi9Z2TJj8BQkxibLx19n33QeZcNICGc9t8ZZasoQ429Jr9jGOcFUOX', 
         }
 
     def find_one_quadra(self, documents):
@@ -99,7 +99,7 @@ class Mongo:
         })
                 
         response = requests.request("POST", url, headers=self.headers, data=payload).json()
-        print(response)
+        print(f"[FIND-ONE] {response}")
         return response
 
     def delete_mongo_cliente(self, documents):
@@ -131,6 +131,29 @@ class Mongo:
             }
         })
         response = requests.request("POST", url=url, headers=self.headers, data=payload).json()
+        return response
+
+    def update_mongo_quadra_cliente(self, documents_client, documents_quadra):
+        url = 'https://data.mongodb-api.com/app/data-ouyxz/endpoint/data/v1/action/updateOne'
+        print(f"[documents_quadra] {documents_quadra}")
+        print(f"[documents_client] {documents_client}")
+        id = int(documents_quadra['id_quadra'])
+        print(id)
+
+        payload = json.dumps({
+            "collection": "quadra",
+            "database": "flask",
+            "dataSource": "Flask-bd",
+            "filter": {"_id":id },
+            "update": {
+                "$set": { "disponivel": documents_quadra["disponivel"],
+                "reservado_por": documents_client["nome"]}
+        }})
+
+        print(payload)
+
+        response = requests.request("POST", url=url , headers=self.headers, data=payload).json()
+        print(response)
         return response
 
 
